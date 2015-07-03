@@ -1,12 +1,17 @@
 angular.module('point', [])
 .factory('PointService', function() {
     var keyword = null;
+    var url_api = "http://182.254.156.59:4150";
+
     return {
         getKeyword: function() {
             return keyword;
         },
         setKeyword: function(k) {
             keyword = k;
+        },
+        getApiUrl: function() {
+            return url_api;
         }
     };
 })
@@ -70,11 +75,10 @@ angular.module('point', [])
 
     .controller("PointController", ['$scope', '$location', '$window','PointService',
     function($scope, $location, $window, pointService) {
-        var url_api = "http://archive.sidooo.com:7495";
 
-        $scope.status = {};
+        var url_api = pointService.getApiUrl();
 
-        $scope.keyword = pointService.getKeyword();;
+        $scope.keyword = pointService.getKeyword();
 
         $scope.data = {nodes:[], edges:[]};
 
@@ -169,7 +173,8 @@ angular.module('point', [])
         }
 
         $scope.parsePointList = function() {
-            $scope.data = {nodes:[], edges:[]};
+            $scope.data.nodes = [];
+            $scope.data.edges = [];
             $.each($scope.points, function(id, point) {
                 var point_node = {};
                 point_node.id = point.docId;
@@ -215,15 +220,20 @@ angular.module('point', [])
             if ($scope.keyword == null || $scope.keyword.length <= 0) {
                 return;
             }
+
+
             $scope.points = {};
             $scope.links = {};
             $.ajax({
-                async: false,
                 type: "GET",
                 url: url_api + "/search",
+                //contentType: 'application/x-www-form-urlencoded; charset=utf-8',
+                //headers: { 'Access-Control-Allow-Origin': '*' },
+                //crossDomain: true,
                 data: {key:$scope.keyword, depth:$scope.depth},
                 dataType: "json",
                 success: function (json) {
+
                     $.each(json.points, function(i, point) {
                         $scope.points[point.docId] = point;
                     });
@@ -233,11 +243,23 @@ angular.module('point', [])
                     });
 
                     $scope.parsePointList();
+                    $scope.$apply();
                 },
                 error: function () {
                     alert("未找到该关键词相关信息");
                 }
             });
+            //$.get(url_api+"/search?key="+$scope.keyword+"&depth="+$scope.depth, function(json) {
+            //        $.each(json.points, function(i, point) {
+            //            $scope.points[point.docId] = point;
+            //        });
+            //
+            //        $.each(json.links, function(i, link) {
+            //           $scope.links[link.keyword] = link;
+            //        });
+            //
+            //        $scope.parsePointList();
+            //})
 
         };
     }

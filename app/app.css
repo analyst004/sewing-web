@@ -1,4 +1,6 @@
 /* app css stylesheet */
+/*更改字体为微软雅黑*/
+/*body,button, input, select, textarea,h1 ,h2, h3, h4, h5, h6 { font-family: Microsoft YaHei,'宋体' , Tahoma, Helvetica, Arial, "\5b8b\4f53", sans-serif;}body,button, input, select, textarea,h1 ,h2, h3, h4, h5, h6 { font-family: Microsoft YaHei,'宋体' , Tahoma, Helvetica, Arial, "\5b8b\4f53", sans-serif;}*/
 
 .menu {
   list-style: none;
@@ -30,12 +32,13 @@
 }
 
 .search-input {
-    height: 35px;
+    height: 34px;
     width:  434px;
+    border-color: rgba(51, 122, 183, 0.8);
 }
 
 .vertical-center {
-    min-height: 90%;  /* Fallback for vh unit */
+    min-height: 100%;  /* Fallback for vh unit */
     min-height: 75vh; /* You might also want to use
                         'height' property instead.
 
