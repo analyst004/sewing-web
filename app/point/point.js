@@ -1,7 +1,7 @@
 angular.module('point', [])
 .factory('PointService', function() {
     var keyword = null;
-    var url_api = "http://182.254.156.59:4150";
+    var url_api = "http://db.sidooo.com:4150";
 
     return {
         getKeyword: function() {
