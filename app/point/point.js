@@ -1,7 +1,7 @@
 angular.module('point', [])
 .factory('PointService', function() {
     var keyword = null;
-    var url_api = "http://db.sidooo.com:4150";
+    var url_api = "http://sewing.sidooo.com:4150";
 
     return {
         getKeyword: function() {
