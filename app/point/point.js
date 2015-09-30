@@ -221,7 +221,6 @@ angular.module('point', [])
                 return;
             }
 
-
             $scope.points = {};
             $scope.links = {};
             $.ajax({
@@ -232,21 +231,38 @@ angular.module('point', [])
                 //crossDomain: true,
                 data: {key:$scope.keyword, depth:$scope.depth},
                 dataType: "json",
-                success: function (json) {
+                success: function (json, status) {
 
-                    $.each(json.points, function(i, point) {
-                        $scope.points[point.docId] = point;
+                    $scope.data.nodes = [];
+                    $scope.data.edges = [];
+                    $.each(json.nodes, function(i, node) {
+                        node.shape = "image";
+                        if (node.type == "point") {
+                            node.image = $scope.IMG_DIR + "point.png";
+                        } else {
+                            if (node.attr == 'tel') {
+                                node.image = $scope.IMG_DIR + "telephone.png";
+                            } else if (node.attr=='ssn') {
+                                node.image = $scope.IMG_DIR + "ssn.png";
+                            } else if (node.attr == 'mobile') {
+                                node.image = $scope.IMG_DIR + "mobile.png";
+                            } else if (node.attr == "email") {
+                                node.image = $scope.IMG_DIR + "email.png";
+                            } else {
+                                node.image = $scope.IMG_DIR + "point.png";
+                            }
+                        }
+                        $scope.data.nodes.push(node);
                     });
 
-                    $.each(json.links, function(i, link) {
-                       $scope.links[link.keyword] = link;
+                    $.each(json.edges, function(i, edge) {
+                        $scope.data.edges.push(edge);
                     });
 
-                    $scope.parsePointList();
                     $scope.$apply();
                 },
-                error: function () {
-                    alert("未找到该关键词相关信息");
+                error: function (request, status, thrown) {
+                    alert("未找到该关键词相关信息:" + thrown);
                 }
             });
             //$.get(url_api+"/search?key="+$scope.keyword+"&depth="+$scope.depth, function(json) {
